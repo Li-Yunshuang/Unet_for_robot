@@ -1,16 +1,26 @@
-# Implementation of deep learning framework -- Unet, using Keras
+# U-net for Pulmonary Bronchoscope Segmentation
+
+Implementation of deep learning framework -- Unet, using Keras
 
 The architecture was inspired by [U-Net: Convolutional Networks for Biomedical Image Segmentation](http://lmb.informatik.uni-freiburg.de/people/ronneber/u-net/).
 
----
 
 ## Overview
 
 ### Data
 
-The original dataset is from [isbi challenge](http://brainiac2.mit.edu/isbi_challenge/), and I've downloaded it and done the pre-processing.
+Collect data on a real model with endoscope. Original format is RGB, while we need grayscale jpg image as input for U-net. Therefore, we prepare
 
-You can find it in folder data/membrane.
+/data/One_channel.py: tranfer image to one channel.
+
+/data/transfer_form.py: tranfer image to '.jpg' from other format.
+
+Same for test data.
+
+Use this command to generate mask:
+    
+	python Generate_label.py /home/lys/UNet/data/train/image jpg hole --savedir /home/lys/UNet/data/train/label 
+
 
 ### Data augmentation
 
@@ -25,14 +35,13 @@ See dataPrepare.ipynb and data.py for detail.
 
 This deep neural network is implemented with Keras functional API, which makes it extremely easy to experiment with different interesting architectures.
 
-Output from the network is a 512*512 which represents mask that should be learned. Sigmoid activation function
-makes sure that mask pixels are in \[0, 1\] range.
+Output from the network is a 512*512 which represents mask that should be learned. Sigmoid activation function makes sure that mask pixels are in \[0, 1\] range.
 
 ### Training
 
-The model is trained for 5 epochs.
+The model is trained for 300 epochs.
 
-After 5 epochs, calculated accuracy is about 0.97.
+After 5 epochs, calculated accuracy is about 0.82.
 
 Loss function for the training is basically just a binary crossentropy.
 
@@ -62,9 +71,9 @@ You will see the predicted results of test image in data/membrane/test
 
 Use the trained model to do segmentation on test images, the result is statisfactory.
 
-![img/0test.png](img/0test.png)
+![img/0.jpg](img/0test.png)
 
-![img/0label.png](img/0label.png)
+![img/0_predict.jpg](img/0label.png)
 
 
 ## About Keras
@@ -80,9 +89,3 @@ runs seamlessly on CPU and GPU.
 Read the documentation [Keras.io](http://keras.io/)
 
 Keras is compatible with: Python 2.7-3.5.
-
-
-
-
-
-(UNet) lys@lys:~/UNet$ python Generate_label.py /home/lys/UNet/data/train/image jpg hole --savedir /home/lys/UNet/data/train/label 

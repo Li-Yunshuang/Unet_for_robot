@@ -44,7 +44,6 @@ def adjustData(img,mask,flag_multi_class,num_class):
         mask = mask /255
         mask[mask > 0.5] = 1
         mask[mask <= 0.5] = 0
-        print(img)
     return (img,mask)
 
 
@@ -125,12 +124,8 @@ def labelVisualize(num_class,color_dict,img):
 
 def saveResult(save_path,npyfile,flag_multi_class = False,num_class = 2):
     for i,item in enumerate(npyfile):
-        # np.set_printoptions(threshold=np.inf)
-        # print(item)
-        # print(item.shape)
         # item = item.squeeze()
         # item = item * 255
-        # print(item.shape)
         # im = Image.fromarray(item)
         # im.show()
         img = labelVisualize(num_class,COLOR_DICT,item) if flag_multi_class else item[:,:,0]
